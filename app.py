@@ -1,15 +1,25 @@
 import newspaper
 from flask import Flask, jsonify, request
 import logging
+import sys
 
 app = Flask(__name__)
-import logging
 
-logger = logging.getLogger(__name__)
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+
 
 @app.route("/health", methods=["GET"])
 def health_check():
     return jsonify({"status": "healty"}), 200
+
 
 @app.route("/", methods=["GET"])
 def get_articles():
@@ -53,14 +63,16 @@ def get_articles():
                     articles.append(current_article)
                 else:
                     failed.append(current_article)
-            except Exception as e:
-                app.logger.erro("Failed to parse article, trying to pass remaining articles")
+            except Exception:
+                logger.error("Failed to parse article, trying to pass remaining articles")
         else:
             break
 
     data["content"] = articles
     data["failed"] = failed
 
+    logger.debug("Found {} articles".format(len(articles)))
+    logger.debug("Failed parsings {}".format(len(failed)))
 
     logger.info("Retuning data as json")
 
