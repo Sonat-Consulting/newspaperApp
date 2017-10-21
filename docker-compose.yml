@@ -8,5 +8,5 @@ services:
       context: ./
     container_name: newspaper
     ports:
-      - "6000:5000"
+      - "5555:5000"
 

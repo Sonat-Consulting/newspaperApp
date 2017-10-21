@@ -3,16 +3,13 @@ from flask import Flask, jsonify, request
 import logging
 
 app = Flask(__name__)
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.INFO)
+import logging
 
+logger = logging.getLogger(__name__)
 
-handler = logging.StreamHandler()
-handler.setLevel(logging.INFO)
-app.logger.addHandler(handler)
-# fix gives access to the gunicorn error log facility
-app.logger.handlers.extend(logging.getLogger("gunicorn.error").handlers)
-
+@app.route("/health", methods=["GET"])
+def health_check():
+    return jsonify({"status": "healty"}), 200
 
 @app.route("/", methods=["GET"])
 def get_articles():
@@ -22,10 +19,10 @@ def get_articles():
     if not original_url.startswith("http://"):
         url = f"http://{original_url}"
 
-    print("Fetching articles from %s", url)
+    logger.info("Fetching articles from %s", url)
 
     paper = newspaper.build(str(url), memoize_articles=False)
-    print("Amount of articles found: %s", len(paper.articles))
+    logger.info("Amount of articles found: %s", len(paper.articles))
     data = {
             "total": len(paper.articles),
             "content": [
@@ -63,6 +60,8 @@ def get_articles():
 
     data["content"] = articles
     data["failed"] = failed
-    app.logger.info("Retuning data as json")
+
+
+    logger.info("Retuning data as json")
 
     return jsonify(data)
