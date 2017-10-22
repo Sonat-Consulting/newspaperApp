@@ -137,5 +137,3 @@ ENV/
 
 .gitignore
 .idea/
-Dockerfile
-requirements.txt
