@@ -19,5 +19,5 @@ a rest api against it.
 ## To run test
 1. Download nltk models 
     1. curl https://raw.githubusercontent.com/codelucas/newspaper/master/download_corpora.py | python3
-2. pip install -r requirements
+2. pip install -r requirements.txt
 3. pytest tests/
