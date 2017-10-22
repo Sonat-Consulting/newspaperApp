@@ -3,10 +3,13 @@ from flask import Flask, jsonify, request
 import logging
 import sys
 import os
+from flask_cors import CORS
+from flask_cors import cross_origin
+
 from extractor import extract_articles
 
 app = Flask(__name__)
-
+CORS(app)
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -25,11 +28,10 @@ def health_check():
     return jsonify({"status": "healty"}), 200
 
 
+@cross_origin()
 @app.route("/", methods=["GET"])
 def get_articles():
     original_url = request.args.get("url")
-
-
 
     amount = 20
     if "ARTICLE_AMOUNT" in os.environ:
