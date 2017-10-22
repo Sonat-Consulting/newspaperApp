@@ -9,4 +9,7 @@ services:
     container_name: newspaper
     ports:
       - "5555:5000"
+    environment:
+      - LOG_LEVEL=DEBUG
+      - ARTICLE_AMOUNT=25
 
