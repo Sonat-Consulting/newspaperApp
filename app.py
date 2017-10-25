@@ -23,9 +23,7 @@ logger.addHandler(ch)
 
 @app.route("/health", methods=["GET"])
 def health_check():
-    logger.debug(os.environ["LOG_LEVEL"])
-    logger.debug(os.environ["ARTICLE_AMOUNT"])
-    return jsonify({"status": "healty"}), 200
+    return jsonify({"status": "healty", "ARTICLE_AMOUNT": os.environ["ARTICLE_AMOUNT"]}), 200
 
 
 @cross_origin()
@@ -33,9 +31,12 @@ def health_check():
 def get_articles():
     original_url = request.args.get("url")
 
-    amount = 20
-    if "ARTICLE_AMOUNT" in os.environ:
+    amount = 0
+    if request.args.get("size"):
+        amount = int(request.args.get("size"))
+    elif "ARTICLE_AMOUNT" in os.environ:
         amount = int(os.environ["ARTICLE_AMOUNT"])
+    logger.info("Using size, %s", amount)
     data = extract_articles(original_url, amount)
 
     return jsonify(data)

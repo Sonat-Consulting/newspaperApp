@@ -24,15 +24,13 @@ def extract_articles(source_url, amount):
     logger.info("Amount of articles found: %s", len(paper.articles))
     data = {
         "total": len(paper.articles),
-        "content": [
-
-        ],
+        "content": [],
         "failed": []
     }
     articles = []
     failed = []
     for index, article in enumerate(paper.articles):
-        if len(articles) < amount:
+        if amount and amount == 0 or len(articles) < amount:
             try:
                 extract_article(article, articles, failed)
             except (Exception, ArticleException) as e:
