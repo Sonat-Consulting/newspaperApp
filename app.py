@@ -30,9 +30,12 @@ def health_check():
 @app.route("/", methods=["GET"])
 def get_articles():
     original_url = request.args.get("url")
+    request_amount = request.args.get("amount")
 
     amount = 0
-    if request.args.get("size"):
+    if request_amount:
+        amount = int(request_amount)
+    elif request.args.get("size"):
         amount = int(request.args.get("size"))
     elif "ARTICLE_AMOUNT" in os.environ:
         amount = int(os.environ["ARTICLE_AMOUNT"])
