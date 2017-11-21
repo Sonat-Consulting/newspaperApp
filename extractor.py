@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger()
 
 
-def dextract_articles(source_url, amount):
+def extract_articles(source_url, amount):
     """
     Extracts all articles below environment variable ARTICLE_AMOUNT or 20 
     :param 
