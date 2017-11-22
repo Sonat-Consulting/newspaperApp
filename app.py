@@ -11,6 +11,9 @@ from extractor import extract_articles
 app = Flask(__name__)
 CORS(app)
 
+werkzeug_logger = logging.getLogger('werkzeug')
+werkzeug_logger.setLevel(logging.INFO)
+
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 

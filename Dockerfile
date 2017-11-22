@@ -6,4 +6,4 @@ RUN apk update ; apk add curl gcc libxml2 libxslt 	libxslt-dev libxml2-dev  musl
 
 HEALTHCHECK CMD curl --fail http://localhost:5000/health || exit 1
 
-CMD ["gunicorn", "--log-level=debug", "--timeout=260", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "--log-level=info", "--timeout=260", "--bind", "0.0.0.0:5000", "app:app"]
