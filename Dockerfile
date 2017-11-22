@@ -1,8 +1,8 @@
-FROM python:3.6.3
+FROM python:3.6.3-alpine3.6
 
 COPY . .
 
-RUN pip install -r ./requirements.txt ; curl https://raw.githubusercontent.com/codelucas/newspaper/master/download_corpora.py | python3
+RUN apk update ; apk add curl gcc libxml2 libxslt 	libxslt-dev libxml2-dev  musl-dev freetype-dev libjpeg-turbo-dev libpng-dev ; pip install -r ./requirements.txt ; curl https://raw.githubusercontent.com/codelucas/newspaper/master/download_corpora.py | python3
 
 HEALTHCHECK CMD curl --fail http://localhost:5000/health || exit 1
 
